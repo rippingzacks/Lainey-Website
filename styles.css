@@ -122,7 +122,7 @@ a{ color: inherit; text-decoration: none; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 84px;
+  height: 96px;
 }
 .brand{
   font-family: var(--font-display);
@@ -133,7 +133,7 @@ a{ color: inherit; text-decoration: none; }
   align-items: center;
 }
 .brand-logo{
-  height: 38px;
+  height: 58px;
   width: auto;
   display: block;
 }
@@ -204,17 +204,10 @@ a{ color: inherit; text-decoration: none; }
   flex-wrap: wrap;
   margin-top: 12px;
 }
-.blueprint-svg{ width: 100%; height: auto; }
-.bp-line{ fill: none; stroke: var(--ink); stroke-width: 1.6; }
-.bp-line-thin{ fill: none; stroke: var(--ink); stroke-width: 1; }
-.bp-line-heavy{ fill: none; stroke: var(--ink); stroke-width: 2.4; }
-.bp-line-dashed{ fill: none; stroke: var(--brass); stroke-width: 1; stroke-dasharray: 6 6; }
-.bp-dim{ stroke: var(--brass); stroke-width: 1; }
-.bp-label{
-  font-family: var(--font-body);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  fill: var(--brass);
+.hero-photo-frame{
+  aspect-ratio: 4 / 5;
+  max-width: 460px;
+  margin-left: auto;
 }
 .bp-compass{ opacity: 0.85; }
 
@@ -568,11 +561,12 @@ a{ color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 760px){
-  .header-row{ height: 72px; }
+  .header-row{ height: 80px; }
+  .brand-logo{ height: 46px; }
   .nav-toggle{ display: flex; }
   .primary-nav{
     position: fixed;
-    top: 72px; left: 0; right: 0;
+    top: 80px; left: 0; right: 0;
     background: var(--ivory);
     border-bottom: 1px solid var(--line);
     flex-direction: column;
