@@ -129,6 +129,13 @@ a{ color: inherit; text-decoration: none; }
   font-size: 1.5rem;
   letter-spacing: 0.12em;
   color: var(--ink);
+  display: flex;
+  align-items: center;
+}
+.brand-logo{
+  height: 38px;
+  width: auto;
+  display: block;
 }
 .primary-nav{
   display: flex;
@@ -337,6 +344,48 @@ a{ color: inherit; text-decoration: none; }
   font-size: 0.92rem;
 }
 
+/* ===== Videos ===== */
+.videos{ padding: 100px 0; background: var(--ivory-dim); }
+.videos h2{ font-size: clamp(1.6rem, 2.6vw, 2.1rem); max-width: 24ch; }
+.videos-sub{ max-width: 64ch; }
+.video-grid{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  margin-top: 44px;
+}
+.video-card h3{
+  font-size: 1.05rem;
+  margin-top: 18px;
+}
+.video-card p{ font-size: 0.94rem; margin-bottom: 0; }
+.video-frame{
+  aspect-ratio: 16 / 9;
+  background: var(--ink);
+  border: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  position: relative;
+}
+.play-icon{ width: 56px; height: 56px; }
+.play-ring{ fill: none; stroke: var(--brass-light); stroke-width: 1.4; }
+.play-tri{ fill: var(--brass-light); }
+.video-placeholder-label{
+  color: rgba(246,242,234,0.6);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ===== Market blocks (Areas) ===== */
+.market-block{ margin-top: 48px; }
+.market-block:first-of-type{ margin-top: 44px; }
+.market-title{ font-size: 1.3rem; }
+.market-copy{ max-width: 70ch; }
+
 /* ===== Why ===== */
 .why{ padding: 100px 0; }
 .why h2{ font-size: clamp(1.6rem, 2.6vw, 2.1rem); max-width: 22ch; }
@@ -466,6 +515,35 @@ a{ color: inherit; text-decoration: none; }
   letter-spacing: 0.14em;
   margin-bottom: 12px;
 }
+.brand-footer-logo{
+  height: 34px;
+  width: auto;
+  margin: 0 auto 16px;
+  display: block;
+}
+.brokerage-line{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 18px 0 10px;
+}
+.brokerage-label{
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--slate);
+}
+.broker-logo{
+  height: 26px;
+  width: auto;
+}
+.brokerage-name{
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
 .footer-fine{
   font-size: 0.8rem;
   color: var(--slate);
@@ -480,6 +558,7 @@ a{ color: inherit; text-decoration: none; }
   .about-grid{ grid-template-columns: 1fr; }
   .photo-frame{ max-width: 320px; }
   .why-grid{ grid-template-columns: 1fr; }
+  .video-grid{ grid-template-columns: 1fr; }
   .village-grid{ grid-template-columns: repeat(2, 1fr); }
   .contact-grid{ grid-template-columns: 1fr; }
   .phase-strip{ grid-template-columns: 1fr; gap: 28px; }
