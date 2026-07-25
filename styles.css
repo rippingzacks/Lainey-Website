@@ -1,19 +1,19 @@
 /* ===== Tokens ===== */
 :root{
-  --ink: #12211D;
-  --ink-soft: #1B2F29;
-  --ivory: #F6F2EA;
-  --ivory-dim: #EFE9DC;
-  --brass: #A8823F;
-  --brass-light: #C9A46B;
-  --clay: #8C5A3C;
-  --slate: #3E4642;
-  --line: #D8CFC0;
-  --line-on-dark: rgba(246,242,234,0.18);
+  --ink: #000000;
+  --ink-soft: #2B372C;
+  --ivory: #FFFFFF;
+  --ivory-dim: #D8CCB5;
+  --brass: #374738;
+  --brass-light: #D8CCB5;
+  --clay: #2B372C;
+  --slate: #2B372C;
+  --line: rgba(0,0,0,0.15);
+  --line-on-dark: rgba(255,255,255,0.2);
   --white: #FFFFFF;
 
-  --font-display: 'Prata', serif;
-  --font-body: 'Manrope', sans-serif;
+  --font-display: 'Object Sans', 'Poppins', 'Century Gothic', sans-serif;
+  --font-body: 'Object Sans', 'Poppins', 'Century Gothic', sans-serif;
 
   --container: 1180px;
 }
@@ -38,13 +38,13 @@ h1,h2,h3{
   font-family: var(--font-display);
   color: var(--ink);
   margin: 0 0 0.5em;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 1.15;
-  letter-spacing: 0.005em;
+  letter-spacing: -0.01em;
 }
 
 p{ margin: 0 0 1em; }
-em{ font-style: italic; color: var(--brass); }
+em{ font-style: normal; color: var(--brass); font-weight: 600; }
 
 a{ color: inherit; text-decoration: none; }
 
@@ -143,7 +143,7 @@ a{ color: inherit; text-decoration: none; }
   background: var(--line);
 }
 .header-broker-logo{
-  height: 32px;
+  height: 46px;
   width: auto;
   display: block;
 }
@@ -569,14 +569,8 @@ a{ color: inherit; text-decoration: none; }
   color: var(--slate);
 }
 .broker-logo{
-  height: 26px;
+  height: 58px;
   width: auto;
-}
-.brokerage-name{
-  font-family: var(--font-display);
-  font-size: 0.95rem;
-  letter-spacing: 0.04em;
-  color: var(--ink);
 }
 .footer-fine{
   font-size: 0.8rem;
@@ -606,7 +600,7 @@ a{ color: inherit; text-decoration: none; }
 @media (max-width: 760px){
   .header-row{ height: 80px; }
   .brand-logo{ height: 38px; }
-  .header-broker-logo{ height: 26px; }
+  .header-broker-logo{ height: 34px; }
   .nav-toggle{ display: flex; }
   .primary-nav{
     position: fixed;
