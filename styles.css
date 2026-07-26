@@ -393,6 +393,28 @@ a{ color: inherit; text-decoration: none; }
 .market-block:first-of-type{ margin-top: 44px; }
 .market-title{ font-size: 1.3rem; }
 .market-copy{ max-width: 70ch; }
+.market-photo-frame{
+  aspect-ratio: 16 / 7;
+  background: var(--ivory-dim);
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--slate);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  position: relative;
+  max-width: 100%;
+}
+.market-photo-frame::before{
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px solid var(--brass);
+  pointer-events: none;
+}
 
 /* ===== Why ===== */
 .why{ padding: 100px 0; }
