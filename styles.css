@@ -290,64 +290,6 @@ a{ color: inherit; text-decoration: none; }
   color: var(--slate);
 }
 
-/* ===== B-Roll Carousel ===== */
-.broll{ position: relative; padding: 60px 0; background: var(--ink); overflow: hidden; }
-.broll-track-wrap{ overflow: hidden; width: 100%; }
-.broll-track{
-  display: flex;
-  gap: 16px;
-  width: max-content;
-  animation: broll-scroll 60s linear infinite;
-}
-.broll:hover .broll-track{ animation-play-state: paused; }
-@keyframes broll-scroll{
-  from{ transform: translateX(0); }
-  to{ transform: translateX(-50%); }
-}
-.broll-tile{
-  width: 320px;
-  aspect-ratio: 16 / 10;
-  background: var(--ink-soft);
-  flex-shrink: 0;
-  border: 1px solid rgba(255,255,255,0.08);
-  overflow: hidden;
-}
-.broll-tile video{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-.broll-cta-wrap{
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-.broll-cta{
-  pointer-events: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  color: var(--white);
-  background: rgba(0,0,0,0.45);
-  backdrop-filter: blur(2px);
-  padding: 22px 34px;
-  border-radius: 4px;
-}
-.broll-cta svg{ width: 46px; height: 46px; }
-.broll-cta .play-ring{ stroke: var(--white); }
-.broll-cta .play-tri{ fill: var(--white); }
-.broll-cta span{
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 700;
-}
-
 /* ===== Search CTA ===== */
 .search-cta{ background: var(--ink); color: var(--white); padding: 70px 0; }
 .search-cta-inner{

@@ -24,3 +24,22 @@ document.querySelectorAll('.concierge-play').forEach(btn => {
     btn.style.display = 'none';
   });
 });
+
+// Hero video playlist rotation — plays each clip once, in sequence, looping back to the first
+const heroVideo = document.getElementById('heroVideo');
+if (heroVideo) {
+  let playlist = [];
+  try {
+    playlist = JSON.parse(heroVideo.getAttribute('data-playlist')) || [];
+  } catch (e) {
+    playlist = [];
+  }
+  let heroIndex = 0;
+  if (playlist.length > 1) {
+    heroVideo.addEventListener('ended', () => {
+      heroIndex = (heroIndex + 1) % playlist.length;
+      heroVideo.src = playlist[heroIndex];
+      heroVideo.play();
+    });
+  }
+}
