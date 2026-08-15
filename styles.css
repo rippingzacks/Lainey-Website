@@ -218,6 +218,7 @@ a{ color: inherit; text-decoration: none; }
   object-position: center 30%;
   display: block;
   background: var(--ink);
+  filter: brightness(0.72) contrast(1.08);
 }
 
 /* ===== Hero Text (separate from video) ===== */
