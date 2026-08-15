@@ -667,6 +667,19 @@ a{ color: inherit; text-decoration: none; }
 
 /* ===== Why ===== */
 .why{ padding: 100px 0; }
+.why-video-frame{
+  aspect-ratio: 21 / 9;
+  max-height: 320px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  margin: 28px 0 40px;
+}
+.why-video-frame video{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 .why h2{ font-size: clamp(1.6rem, 2.6vw, 2.1rem); max-width: 22ch; }
 .why-grid{
   display: grid;
@@ -740,6 +753,19 @@ a{ color: inherit; text-decoration: none; }
 
 /* ===== Contact ===== */
 .contact{ background: var(--ink); color: var(--ivory); padding: 100px 0 110px; }
+.contact-video-frame{
+  aspect-ratio: 21 / 9;
+  max-height: 340px;
+  overflow: hidden;
+  border: 1px solid var(--line-on-dark);
+  margin-bottom: 56px;
+}
+.contact-video-frame video{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 .contact-grid{
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
