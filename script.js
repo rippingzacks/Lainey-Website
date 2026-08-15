@@ -14,3 +14,13 @@ primaryNav.querySelectorAll('a').forEach(link => {
     navToggle.setAttribute('aria-expanded', 'false');
   });
 });
+
+// Concierge video play buttons
+document.querySelectorAll('.concierge-play').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const video = btn.parentElement.querySelector('video');
+    if (!video) return;
+    video.play();
+    btn.style.display = 'none';
+  });
+});
