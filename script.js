@@ -25,14 +25,12 @@ document.querySelectorAll('.concierge-play').forEach(btn => {
   });
 });
 
-// Hero video playlist rotation with crossfade. Both video elements are always
-// actively playing (one visible, one hidden and looping quietly in the
-// background) so there is never a "loading gap" at the moment of a crossfade —
-// the clip being revealed is already rendering real frames well before its turn.
-// Each crossfade is timed to that clip's own real duration, captured via the
-// 'loadedmetadata' event rather than read on-demand (which was unreliable and
-// fell back to a generic timer — cutting long clips short and letting short
-// clips loop twice before switching).
+// Hero video playlist rotation — deliberately simple. A single video element,
+// no loop, no artificial duration timing. The browser's own native 'ended'
+// event (fires only once a clip has genuinely played all the way through)
+// advances to the next clip, so there is no way for a clip to play twice or
+// get cut short — that guarantee comes from the browser itself, not from any
+// timing logic we have to get right. A brief opacity dip masks the src swap.
 const heroMedia = document.getElementById('heroMedia');
 if (heroMedia) {
   let playlist = [];
@@ -42,81 +40,24 @@ if (heroMedia) {
     playlist = [];
   }
 
-  const videoA = document.getElementById('heroVideoA');
-  const videoB = document.getElementById('heroVideoB');
+  const heroVideo = document.getElementById('heroVideo');
 
-  if (playlist.length > 1 && videoA && videoB) {
-    videoA.loop = true;
-    videoB.loop = true;
-
+  if (playlist.length > 1 && heroVideo) {
     let currentIndex = 0;
-    let activeVideo = videoA;
-    let standbyVideo = videoB;
-    let cycleTimer = null;
-    const durationByIndex = {};
+    const FADE_MS = 350;
 
-    function cacheDuration(video, index) {
-      // If metadata already loaded (common for the very first clip, which the
-      // browser starts fetching immediately via the HTML autoplay attribute),
-      // grab it now — otherwise the 'loadedmetadata' event may have already
-      // fired once and we'd wait forever for an event that never comes again.
-      if (video.readyState >= 1 && video.duration && isFinite(video.duration)) {
-        durationByIndex[index] = video.duration;
-        return;
-      }
-      const onMeta = () => {
-        if (video.duration && isFinite(video.duration)) {
-          durationByIndex[index] = video.duration;
-        }
-        video.removeEventListener('loadedmetadata', onMeta);
-      };
-      video.addEventListener('loadedmetadata', onMeta);
-    }
-
-    function warmUp(video, index) {
-      video.src = playlist[index];
-      // .load() resets the element's readyState/duration for the new source —
-      // must happen before we check/cache duration, or a reused video element
-      // can hand back its *previous* clip's leftover duration value.
-      video.load();
-      cacheDuration(video, index);
-      const p = video.play();
-      if (p && p.catch) p.catch(() => {});
-    }
-
-    function scheduleNextCrossfade() {
-      if (cycleTimer) clearTimeout(cycleTimer);
-      const known = durationByIndex[currentIndex];
-      if (known) {
-        const ms = Math.max(2500, known * 1000 - 150);
-        cycleTimer = setTimeout(crossfade, ms);
-      } else {
-        // Duration not cached yet for some reason — check again shortly
-        // rather than guessing with a fixed fallback that could be wrong.
-        cycleTimer = setTimeout(scheduleNextCrossfade, 150);
-      }
-    }
-
-    function crossfade() {
-      activeVideo.classList.remove('is-active');
-      standbyVideo.classList.add('is-active');
-
-      const oldActive = activeVideo;
-      activeVideo = standbyVideo;
-      standbyVideo = oldActive;
-
+    function playNext() {
       currentIndex = (currentIndex + 1) % playlist.length;
-      const upcomingIndex = (currentIndex + 1) % playlist.length;
-      // Give the now-hidden element a moment to fully fade out before swapping
-      // its source underneath it.
-      setTimeout(() => warmUp(standbyVideo, upcomingIndex), 1300);
-
-      scheduleNextCrossfade();
+      heroVideo.classList.add('is-fading');
+      setTimeout(() => {
+        heroVideo.src = playlist[currentIndex];
+        heroVideo.load();
+        const p = heroVideo.play();
+        if (p && p.catch) p.catch(() => {});
+        heroVideo.classList.remove('is-fading');
+      }, FADE_MS);
     }
 
-    // Get the second clip playing quietly in the background right away
-    cacheDuration(videoA, 0);
-    warmUp(videoB, 1);
-    scheduleNextCrossfade();
+    heroVideo.addEventListener('ended', playNext);
   }
 }
