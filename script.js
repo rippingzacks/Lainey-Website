@@ -29,8 +29,8 @@ document.querySelectorAll('.concierge-play').forEach(btn => {
 // actively playing (one visible, one hidden and looping quietly in the
 // background) so there is never a "loading gap" at the moment of a crossfade —
 // the clip being revealed is already rendering real frames well before its turn.
-// A fixed interval drives the rotation, rather than each clip's own duration,
-// so timing can't get thrown off by different clip lengths or buffering speed.
+// Each crossfade is timed to that clip's own duration (not a fixed interval),
+// so short clips play through once rather than looping twice before switching.
 const heroMedia = document.getElementById('heroMedia');
 if (heroMedia) {
   let playlist = [];
@@ -42,7 +42,7 @@ if (heroMedia) {
 
   const videoA = document.getElementById('heroVideoA');
   const videoB = document.getElementById('heroVideoB');
-  const SLIDE_SECONDS = 6;
+  const FALLBACK_SECONDS = 6;
 
   if (playlist.length > 1 && videoA && videoB) {
     videoA.loop = true;
@@ -51,12 +51,24 @@ if (heroMedia) {
     let currentIndex = 0;
     let activeVideo = videoA;
     let standbyVideo = videoB;
+    let cycleTimer = null;
 
     function warmUp(video, index) {
       video.src = playlist[index];
       video.load();
       const p = video.play();
       if (p && p.catch) p.catch(() => {});
+    }
+
+    function getClipMs(video) {
+      const d = video.duration;
+      if (!d || isNaN(d) || !isFinite(d)) return FALLBACK_SECONDS * 1000;
+      return Math.max(2500, d * 1000 - 150);
+    }
+
+    function scheduleNextCrossfade() {
+      if (cycleTimer) clearTimeout(cycleTimer);
+      cycleTimer = setTimeout(crossfade, getClipMs(activeVideo));
     }
 
     function crossfade() {
@@ -72,10 +84,12 @@ if (heroMedia) {
       // Give the now-hidden element a moment to fully fade out before swapping
       // its source underneath it.
       setTimeout(() => warmUp(standbyVideo, upcomingIndex), 1300);
+
+      scheduleNextCrossfade();
     }
 
     // Get the second clip playing quietly in the background right away
     warmUp(videoB, 1);
-    setInterval(crossfade, SLIDE_SECONDS * 1000);
+    scheduleNextCrossfade();
   }
 }
