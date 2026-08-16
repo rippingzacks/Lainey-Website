@@ -75,8 +75,11 @@ if (heroMedia) {
 
     function warmUp(video, index) {
       video.src = playlist[index];
-      cacheDuration(video, index);
+      // .load() resets the element's readyState/duration for the new source —
+      // must happen before we check/cache duration, or a reused video element
+      // can hand back its *previous* clip's leftover duration value.
       video.load();
+      cacheDuration(video, index);
       const p = video.play();
       if (p && p.catch) p.catch(() => {});
     }
