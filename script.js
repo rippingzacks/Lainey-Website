@@ -29,8 +29,10 @@ document.querySelectorAll('.concierge-play').forEach(btn => {
 // actively playing (one visible, one hidden and looping quietly in the
 // background) so there is never a "loading gap" at the moment of a crossfade —
 // the clip being revealed is already rendering real frames well before its turn.
-// Each crossfade is timed to that clip's own duration (not a fixed interval),
-// so short clips play through once rather than looping twice before switching.
+// Each crossfade is timed to that clip's own real duration, captured via the
+// 'loadedmetadata' event rather than read on-demand (which was unreliable and
+// fell back to a generic timer — cutting long clips short and letting short
+// clips loop twice before switching).
 const heroMedia = document.getElementById('heroMedia');
 if (heroMedia) {
   let playlist = [];
@@ -42,7 +44,6 @@ if (heroMedia) {
 
   const videoA = document.getElementById('heroVideoA');
   const videoB = document.getElementById('heroVideoB');
-  const FALLBACK_SECONDS = 6;
 
   if (playlist.length > 1 && videoA && videoB) {
     videoA.loop = true;
@@ -52,23 +53,45 @@ if (heroMedia) {
     let activeVideo = videoA;
     let standbyVideo = videoB;
     let cycleTimer = null;
+    const durationByIndex = {};
+
+    function cacheDuration(video, index) {
+      // If metadata already loaded (common for the very first clip, which the
+      // browser starts fetching immediately via the HTML autoplay attribute),
+      // grab it now — otherwise the 'loadedmetadata' event may have already
+      // fired once and we'd wait forever for an event that never comes again.
+      if (video.readyState >= 1 && video.duration && isFinite(video.duration)) {
+        durationByIndex[index] = video.duration;
+        return;
+      }
+      const onMeta = () => {
+        if (video.duration && isFinite(video.duration)) {
+          durationByIndex[index] = video.duration;
+        }
+        video.removeEventListener('loadedmetadata', onMeta);
+      };
+      video.addEventListener('loadedmetadata', onMeta);
+    }
 
     function warmUp(video, index) {
       video.src = playlist[index];
+      cacheDuration(video, index);
       video.load();
       const p = video.play();
       if (p && p.catch) p.catch(() => {});
     }
 
-    function getClipMs(video) {
-      const d = video.duration;
-      if (!d || isNaN(d) || !isFinite(d)) return FALLBACK_SECONDS * 1000;
-      return Math.max(2500, d * 1000 - 150);
-    }
-
     function scheduleNextCrossfade() {
       if (cycleTimer) clearTimeout(cycleTimer);
-      cycleTimer = setTimeout(crossfade, getClipMs(activeVideo));
+      const known = durationByIndex[currentIndex];
+      if (known) {
+        const ms = Math.max(2500, known * 1000 - 150);
+        cycleTimer = setTimeout(crossfade, ms);
+      } else {
+        // Duration not cached yet for some reason — check again shortly
+        // rather than guessing with a fixed fallback that could be wrong.
+        cycleTimer = setTimeout(scheduleNextCrossfade, 150);
+      }
     }
 
     function crossfade() {
@@ -89,6 +112,7 @@ if (heroMedia) {
     }
 
     // Get the second clip playing quietly in the background right away
+    cacheDuration(videoA, 0);
     warmUp(videoB, 1);
     scheduleNextCrossfade();
   }
